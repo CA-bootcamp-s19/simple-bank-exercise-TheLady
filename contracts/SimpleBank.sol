@@ -1,10 +1,14 @@
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity 0.6.12;
+// pragma solidity >=0.4.21 <=0.6.12;
+// pragma solidity >=0.4.21 <=0.7.0;
+
 /*
     This exercise has been updated to use Solidity version 0.6.12
     Breaking changes from 0.5 to 0.6 can be found here: 
     https://solidity.readthedocs.io/en/v0.6.12/060-breaking-changes.html
 */
-
-pragma solidity ^0.6.12;
 
 contract SimpleBank {
 
@@ -13,12 +17,9 @@ contract SimpleBank {
     //
     
     /* Fill in the keyword. Hint: We want to protect our users balance from other contracts*/
-    mapping (address => uint) private balances;
-    
+    mapping (address => uint) private balances;   
     /* Fill in the keyword. We want to create a getter function and allow contracts to be able to see if a user is enrolled.  */
     mapping (address => bool)  public enrolled;
-    
-
     /* Let's make sure everyone knows who owns the bank. Use the appropriate keyword for this*/
     address public owner;
     
@@ -27,14 +28,16 @@ contract SimpleBank {
     //
     
     /* Add an argument for this event, an accountAddress */
-    event LogEnrolled(address _accountAddress);
+    // event LogEnrolled(address _accountAddress);
+    
+    event LogEnrolled(address accountAddress);
 
     /* Add 2 arguments for this event, an accountAddress and an amount */
-    event LogDepositMade(address accountAddress, uint _amount);
+    event LogDepositMade(address accountAddress, uint amount);
 
     /* Create an event called LogWithdrawal */
     /* Add 3 arguments for this event, an accountAddress, withdrawAmount and a newBalance */
-    event LogWithdrawal(address accountAddress, uint withdrawAmount, uint newBalance)
+    event LogWithdrawal(address accountAddress, uint withdrawAmount, uint newBalance);
 
 
     //
@@ -42,7 +45,7 @@ contract SimpleBank {
     //
 
     /* Use the appropriate global variable to get the sender of the transaction */
-    constructor() public {
+    constructor () public {
         /* Set the owner to the creator of this contract */
         owner = msg.sender;
     }
@@ -56,31 +59,51 @@ contract SimpleBank {
         revert();
     }
 
+    
+
     /// @notice Get balance
     /// @return The balance of the user
     // A SPECIAL KEYWORD prevents function from editing state variables;
     // allows function to run locally/off blockchain
-    function getBalance() public returns (uint) {
+    function getBalance() public view returns (uint) {
         /* Get the balance of the sender of this transaction */
+        return balances[msg.sender];
     }
 
     /// @notice Enroll a customer with the bank
     /// @return The users enrolled status
     // Emit the appropriate event
     function enroll() public returns (bool){
-    
+        enrolled[msg.sender] = true;
+        emit LogEnrolled(msg.sender);
+        return enrolled[msg.sender];
     }
 
+
+
     /// @notice Deposit ether into bank
+
     /// @return The balance of the user after the deposit is made
     // Add the appropriate keyword so that this function can receive ether
     // Use the appropriate global variables to get the transaction sender and value
     // Emit the appropriate event    
     // Users should be enrolled before they can make deposits
     function deposit() public returns (uint) {
+        
+
         /* Add the amount to the user's balance, call the event associated with a deposit,
           then return the balance of the user */
+
     }
+
+
+// from documentation This contract keeps all Ether sent to it with no way
+// to get it back.
+// contract Sink {
+//     event Received(address, uint);
+//     receive() external payable {
+//         emit Received(msg.sender, msg.value
+
 
     /// @notice Withdraw ether from bank
     /// @dev This does not return any excess ether sent to it
@@ -95,3 +118,4 @@ contract SimpleBank {
     }
 
 }
+
