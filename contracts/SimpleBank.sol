@@ -1,8 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
-
-pragma solidity 0.6.12;
-// pragma solidity >=0.4.21 <=0.6.12;
-// pragma solidity >=0.4.21 <=0.7.0;
+pragma solidity ^0.6.12;
 
 /*
     This exercise has been updated to use Solidity version 0.6.12
